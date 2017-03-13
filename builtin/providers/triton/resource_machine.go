@@ -275,7 +275,7 @@ func resourceMachineExists(d *schema.ResourceData, meta interface{}) (bool, erro
 
 	machine, err := client.GetMachine(d.Id())
 
-	return machine != nil && err == nil, err
+	return machine != nil && err == nil, nil
 }
 
 func resourceMachineRead(d *schema.ResourceData, meta interface{}) error {
