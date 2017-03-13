@@ -142,7 +142,7 @@ func resourceFabricExists(d *schema.ResourceData, meta interface{}) (bool, error
 
 	fabric, err := client.GetFabricNetwork(int16(d.Get("vlan_id").(int)), d.Id())
 
-	return fabric != nil && err == nil, err
+	return fabric != nil && err == nil, nil
 }
 
 func resourceFabricRead(d *schema.ResourceData, meta interface{}) error {
