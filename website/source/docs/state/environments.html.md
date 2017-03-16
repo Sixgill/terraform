@@ -34,7 +34,7 @@ to switch environments you can use `terraform env select`, etc.
 For example, creating an environment:
 
 ```
-$ terraform env create bar
+$ terraform env new bar
 Created and switched to environment "bar"!
 
 You're now on a new, empty environment. Environments isolate their state,
@@ -46,6 +46,35 @@ As the command says, if you run `terraform plan`, Terraform will not see
 any existing resources that existed on the default (or any other) environment.
 **These resources still physically exist,** but are managed by another
 Terraform environment.
+
+## Current Environment Interpolation
+
+Within your Terraform configuration, you may reference the current environment
+using the `${terraform.env}` interpolation variable. This can be used anywhere
+interpolations are allowed.
+
+Referencing the current environment is useful for changing behavior based
+on the environment. For example, for non-default environments, it may be useful
+to spin up smaller cluster sizes. You can do this:
+
+```
+resource "aws_instance" "example" {
+  count = "${terraform.env == "default" ? 5 : 1}"
+
+  # ... other fields
+}
+```
+
+Another popular use case is using the environment as part of naming or
+tagging behavior:
+
+```
+resource "aws_instance" "example" {
+  tags { Name = "web - ${terraform.env}" }
+
+  # ... other fields
+}
+```
 
 ## Best Practices
 
